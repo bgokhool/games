@@ -296,26 +296,63 @@ class Sudoku:
     # static method
     def rotate90(board):
         """
-        Given a board representation
+        Given an n x n board representation
         Rotates the board 90 degrees clockwise
         """
-        pass
+        new_board = []
+        cols = len(board[0])
+        rows = len(board)
+        for i in range(cols):
+            row = []
+            for j in range(rows):
+                row.append(board[-1-j][i])
+            new_board.append(row)
+
+        return new_board
 
     # static method
     def rotate180(board):
         """
-        Given a board representation
+        Given an n x n board representation
         Rotates the board 180 degrees clockwise
         """
-        pass
+        new_board = []
+        for row in board:
+            new_row = []
+            for col in row:
+                new_row.insert(0, col)
+            new_board.insert(0, new_row)
+
+        return new_board
 
     # static method
     def rotate270(board):
         """
-        Given a board representation
+        Given an n x n board representation
         Rotates the board 270 degrees clockwise
         """
-        pass
+        cols = len(board[0])
+        rows = len(board)
+        new_board = [[] for k in range(rows)]
+
+        for i in range(rows):
+            for j in range(cols):
+                new_board[-1-j].append(board[i][j])
+
+        return new_board
+
+    def reflect_horz(board):
+        """
+        Given an n x n board representation
+        Returns a new board that is the reflection of the board
+        in a horizontal line about row 5 (the middle row)
+        """
+        new_board = []
+        for row in board:
+            new_row = row[:]
+            new_board.insert(0, new_row)
+
+        return new_board
 
     # static method
     def swap_rows(board, row1, row2):
@@ -338,4 +375,9 @@ class Sudoku:
 
 if __name__ == "__main__":
     game1 = Sudoku(1)
+    print(game1)
+    game1.board = Sudoku.rotate90(game1.board)
+    print(game1)
+
+    game1.board = Sudoku.rotate270(game1.board)
     print(game1)
