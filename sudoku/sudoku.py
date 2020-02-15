@@ -54,6 +54,7 @@ Algorithm to generate a solution for any given board.
 import math
 from random import randint, choice
 
+# Should implement search problem interface
 class Sudoku:
     """ Sudoku class used to define a sudoku board for entertainement"""
 
@@ -61,6 +62,7 @@ class Sudoku:
     ENTRY = 0
     ROWS = COLUMNS = 9
     board = []
+    puzzle_board = None
 
     def __init__(self, level):
         """
@@ -99,11 +101,12 @@ class Sudoku:
                 row.append(self.ENTRY)
             self.board.append(row)
 
-    def clearBoard(reset):
+    def clearBoard(self):
         """
-        Takes a Sudoku board and clears it by adding zeros to all the entries
+        Takes a Sudoku board and clears it by removing all the entries that
+        were previously added by the player
         """
-        self.resetBoard()
+        self.board = self.puzzle_board[:]
 
 
     def printBoard(self):
@@ -214,7 +217,7 @@ class Sudoku:
         return self.__isValidGrid(row_index, col_index, number) and\
             self.__isValidRow(row_index, number) and\
             self.__isValidCol(col_index, number)
-            
+
 
 
 if __name__ == "__main__":
