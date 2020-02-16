@@ -55,7 +55,7 @@ import math
 from random import randint, choice
 
 class SudokuRules():
-    """ Sudoku class used to define a sudoku board for entertainement"""
+    """ Sudoku class used to define a sudoku board for entertainment"""
 
 
     ENTRY = 0

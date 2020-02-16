@@ -1,13 +1,13 @@
 """
 Unit Tests for the Sudoku class
 """
-from sudoku import *
+from sudoku_abstract import *
 import unittest as u
 
 class SudokuTest(u.TestCase):
 
     def setUp(self):
-        self.test_game = Sudoku()
+        self.test_game = SudokuRules()
 
     def tearDown(self):
         self.test_game = None
