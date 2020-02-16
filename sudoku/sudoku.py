@@ -54,30 +54,18 @@ Algorithm to generate a solution for any given board.
 import math
 from random import randint, choice
 
-# Should implement search problem interface
-class Sudoku:
+class Sudoku():
     """ Sudoku class used to define a sudoku board for entertainement"""
 
 
     ENTRY = 0
     ROWS = COLUMNS = 9
     board = []
-    puzzle_board = None
-
-    def __init__(self, level):
-        """
-        Takes an INT number from 0 to 2 corresponding to the difficulty level
-        and generates a Sudoku game based on that difficulty
-        Level of difficulty:
-            0 - Easy
-            1 - Medium
-            2 - Hard
-        """
-        self.level = level
-        self.sum_start_values = self.generate_start_values(level)
+    
+    def __init__(self):
+        """ Initializes an empty Sudoku Board """
         self.resetBoard()
-        self.place_values()
-        self.board = self.solved_board
+
 
     def generate_start_values(self, level):
         """
@@ -95,18 +83,13 @@ class Sudoku:
         """
         Initializes the Sudoku board by adding zeros to the empty entries
         """
+        board = []
         for i in range(self.ROWS):
             row = []
             for j in range(self.COLUMNS):
                 row.append(self.ENTRY)
-            self.board.append(row)
-
-    def clearBoard(self):
-        """
-        Takes a Sudoku board and clears it by removing all the entries that
-        were previously added by the player
-        """
-        self.board = self.puzzle_board[:]
+            board.append(row)
+        self.board = board
 
 
     def printBoard(self):
@@ -150,8 +133,6 @@ class Sudoku:
                     str_board += ","
         return str_board
 
-    # needs more documentation on specific parameters that can be used
-    # I also need to and error checking features, security of my code, make it more robust
     def updateEntry(self, row, col, number):
         """
         Takes a number from 1 to 9 with a location in the grid given by a row
@@ -221,10 +202,4 @@ class Sudoku:
 
 
 if __name__ == "__main__":
-    game1 = Sudoku(1)
-    print(game1)
-    game1.board = Sudoku.rotate90(game1.board)
-    print(game1)
-
-    game1.board = Sudoku.reflect_vert(game1.board)
-    print(game1)
+    pass
