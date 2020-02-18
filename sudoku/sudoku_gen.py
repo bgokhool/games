@@ -35,6 +35,8 @@ to know that they might be solving the same puzzle.
 class SudokuPuzzleGen():
     """ Sudoku class used to define a sudoku board for entertainement"""
 
+    ROWS = COLUMNS = 9
+
     solved_board = \
     [
         ['a', 'b', 'c',     'd', 'e', 'f',      'g', 'h', 'i'],
@@ -62,42 +64,16 @@ class SudokuPuzzleGen():
             1 - Medium
             2 - Hard
         """
-        self.level = level
+        self.genrate_soln_board()
 
-    def updatedSudoku(self, row, col, number):
-        """
-        Takes a number from 0 to 8 with a location in the grid given by a row
-        number and a column number and updates the sudoku board with that
-        number
-        """
-        return
-
-    def getFirstBlankEntry(self):
-        """
-        Returns a tuple of the index of the first blank entry or None otherwise
-        """
-        for i in range(self.ROWS):
-            for j in range(self.COLUMNS):
-                if self.board[i][j] == 0:
-                    return (i,j)
-        return None
-
-
-    def clearBoard(self):
-        """
-        Takes a Sudoku board and clears it by removing all the entries that
-        were previously added by the player
-        """
-        board = []
-        for row in self.puzzle_board:
-            new_row = row[:]
-            board.append(new_row)
-        self.board = board
+    def getBoard():
+        """ Returns a generated fully solved board """
+        return self.solved_board
 
     def genrate_soln_board(self):
         """
         Generates a random fully complete solution board based on
-        above description
+        above description stored in the puzzle instance
         """
         self.place_values(self)
 
@@ -121,8 +97,8 @@ class SudokuPuzzleGen():
         completed solution
         """
         mapping = self.get_mapping()
-        for row in range(s.ROWS):
-            for col in range(s.COLUMNS):
+        for row in range(self.ROWS):
+            for col in range(self.COLUMNS):
                 num = mapping[solved_board[row][col]]
                 solved_board[row][col] = num
 
@@ -217,3 +193,15 @@ class SudokuPuzzleGen():
         two cols can be swapped and swaps them if they can be
         """
         pass
+
+
+        # def clearBoard(self):
+        #     """
+        #     Takes a Sudoku board and clears it by removing all the entries that
+        #     were previously added by the player
+        #     """
+        #     board = []
+        #     for row in self.solved_board:
+        #         new_row = row[:]
+        #         board.append(new_row)
+        #     self.board = board
