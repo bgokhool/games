@@ -4,10 +4,10 @@ Unit Tests for the Sudoku class
 from sudoku_abstract import *
 import unittest as u
 
-class SudokuTest(u.TestCase):
+class Sudoku(u.TestCase):
 
     def setUp(self):
-        self.test_game = SudokuRules()
+        self.test_game = Sudoku()
 
     def tearDown(self):
         self.test_game = None
