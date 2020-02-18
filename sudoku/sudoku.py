@@ -52,33 +52,88 @@ Algorithm to generate a solution for any given board.
 """
 
 import math
+import copy
 from random import randint, choice
 
-class Sudoku():
-    """ Sudoku class used to define a sudoku board for entertainment"""
+class Sudoku(ProblemState):
+    """
+    Sudoku class used to define a sudoku board for entertainment
+
+    1. This Sudoku Class takes a board to create a game.
+
+    Every method assumes both rows and columns range from index 0 to 8.
+    This logic has to be kept in mind when calling this class in a main game
+    module.
+
+    """
 
 
     ENTRY = 0
     ROWS = COLUMNS = 9
-    board = []
 
-    def __init__(self):
-        """ Initializes an empty Sudoku Board """
-        self.resetBoard()
+    def __init__(self, boardState, operator=None):
+        """ Takes a Sudoku Board and creates a game """
+        self.board = boardState
+        self.operator = operator
 
-    # This method will be in the real sudoku module
-    # I am not using it here
-    def generate_start_values(self, level):
+    def __str__(self):
         """
-        Takes an level from 0 to 2
-        """
-        if level == 0:
-            return randint(34, 37)
-        elif level == 1:
-            return randint(28, 32)
-        else:
-            return randint(25, 28)
+        return: string representation of the Sudoku Board
 
+        If there is an operator, we add it to the string.
+        The entries are separated by a comma and the rows
+        by a newline character
+        """
+        str_board = ""
+        if self.operator is not None:
+            str_board += "Operator: " + self.operator + "\n"
+
+        for i in range(self.ROWS):
+            if i != 0 and (i%3) == 0:
+                str_board += "-"*17 + "\n"
+
+            for j in range(self.COLUMNS):
+                str_board += str(self.board[i][j])
+                if j != (self.COLUMNS-1) and (j%3) == 2:
+                    str_board += "|"
+                elif j == (self.COLUMNS-1):
+                    str_board += "\n"
+                else:
+                    str_board += ","
+        return str_board
+
+
+    def dictkey(self):
+        """
+        Returns a string that can be used as a dictionary key to
+        represent unique states.
+        This is basically similar to __str__ w/o the operator
+        """
+        result = ""
+        for i in range(self.ROWS):
+            if i != 0 and (i%3) == 0:
+                str_board += "-"*17 + "\n"
+
+            for j in range(self.COLUMNS):
+                str_board += str(self.board[i][j])
+                if j != (self.COLUMNS-1) and (j%3) == 2:
+                    str_board += "|"
+                elif j == (self.COLUMNS-1):
+                    str_board += "\n"
+                else:
+                    str_board += ","
+        return str_board
+
+    def equals(self, other):
+        """
+        Tests whether the self (this) state instance
+        equals the given other state.
+        """
+        for i in range(self.ROWS):
+            for j in range(self.COLUMNS):
+                if self.board[i][j] != other.board[i][j]:
+                    return False
+        return True
 
     def resetBoard(self):
         """
@@ -112,27 +167,6 @@ class Sudoku():
 
         print("===========================")
 
-    def __str__(self):
-        """
-        return: string representation of the Sudoku str_board
-
-        The entries are separated by a comma and the rows
-        by a newline character
-        """
-        str_board = ""
-        for i in range(self.ROWS):
-            if i != 0 and (i%3) == 0:
-                str_board += "-"*17 + "\n"
-
-            for j in range(self.COLUMNS):
-                str_board += str(self.board[i][j])
-                if j != (self.COLUMNS-1) and (j%3) == 2:
-                    str_board += "|"
-                elif j == (self.COLUMNS-1):
-                    str_board += "\n"
-                else:
-                    str_board += ","
-        return str_board
 
     def updateEntry(self, row, col, number):
         """
@@ -140,9 +174,18 @@ class Sudoku():
         number and a column number and updates the sudoku board with that
         number
         """
-        row_index = row-1
-        col_index = col-1
-        self.board[row_index][col_index] = number
+        self.board = self.updatedSudoku(row, col, number)
+
+    def updatedSudoku(self, row, col, number):
+        """
+        Takes a number from 1 to 9 with a location in the grid given by a row
+        index and a column index
+        Creates an updated version the sudoku board with that number
+        Returns the new board
+        """
+        updatedBoard = copy.deepcopy(self.board)
+        updatedBoard[row][col] = number
+        return updatedBoard
 
     def __isValidRow(self, row, number):
         """
@@ -188,27 +231,41 @@ class Sudoku():
 
     def isValid(self, row, col, number):
         """
-        Takes a number with coordinate location in the sudoku board,
-        i.e. its row (1 to 9) and its column (1 to 9),
+        Takes a number and a location on the sudoku board,
+        i.e. a row index (0 to 8) and a column index (0 to 8),
         and verifies whether the given entry is allowed or not.
 
         return: True iff the number is allowed in that specific location
         """
-        row_index = row-1
-        col_index = col-1
-        return self.__isValidGrid(row_index, col_index, number) and\
-            self.__isValidRow(row_index, number) and\
-            self.__isValidCol(col_index, number)
+        return self.__isValidGrid(row, col, number) and\
+            self.__isValidRow(row, number) and\
+            self.__isValidCol(col, number)
 
-    def applyOperators(self):
+    def getFirstBlankEntry(self):
+        """
+        Returns a tuple of the index of the first blank entry or None otherwise
+        """
+        for i in range(self.ROWS):
+            for j in range(self.COLUMNS):
+                if self.board[i][j] == 0:
+                    return (i,j)
+        return None
+
+    def successors(self):
         """
         Returns a list of valid successors to the current state.
         """
-        indices = self.getBlankIndex()
+        indices = self.getFirstBlankEntry()
         result = []
         if indices not None:
+            row = indices[0]
+            col = indices[1]
             for i in range(1, 10):
-                result.append(self.updatedSudoku(indices[0], indices[1], i))
+                if self.isValid(row, col, i):
+                    succBoard = self.updatedSudoku(row, col, i)
+                    operator = "Updated entry at row "+row+" and col "+col\
+                    +" with number: "+i
+                    result.append(Sudoku(succBoard, operator))
         return result
 
 
