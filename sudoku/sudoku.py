@@ -54,6 +54,7 @@ Algorithm to generate a solution for any given board.
 import math
 import copy
 from random import randint, choice
+from search_problem import *
 
 class Sudoku(ProblemState):
     """
@@ -71,10 +72,9 @@ class Sudoku(ProblemState):
     ENTRY = 0
     ROWS = COLUMNS = 9
 
-    def __init__(self, boardState, operator=None):
+    def __init__(self, boardState):
         """ Takes a Sudoku Board and creates a game """
         self.board = boardState
-        self.operator = operator
 
     def __str__(self):
         """
@@ -85,8 +85,6 @@ class Sudoku(ProblemState):
         by a newline character
         """
         str_board = ""
-        if self.operator is not None:
-            str_board += "Operator: " + self.operator + "\n"
 
         for i in range(self.ROWS):
             if i != 0 and (i%3) == 0:
@@ -112,17 +110,17 @@ class Sudoku(ProblemState):
         result = ""
         for i in range(self.ROWS):
             if i != 0 and (i%3) == 0:
-                str_board += "-"*17 + "\n"
+                result += "-"*17 + "\n"
 
             for j in range(self.COLUMNS):
-                str_board += str(self.board[i][j])
+                result += str(self.board[i][j])
                 if j != (self.COLUMNS-1) and (j%3) == 2:
-                    str_board += "|"
+                    result += "|"
                 elif j == (self.COLUMNS-1):
-                    str_board += "\n"
+                    result += "\n"
                 else:
-                    str_board += ","
-        return str_board
+                    result += ","
+        return result
 
     def equals(self, other):
         """
@@ -174,11 +172,11 @@ class Sudoku(ProblemState):
         number and a column number and updates the sudoku board with that
         number
         """
-        self.board = self.updatedSudoku(row, col, number)
+        self.board = self.newBoard(row, col, number)
 
-    def updatedSudoku(self, row, col, number):
+    def newBoard(self, row, col, number):
         """
-        Takes a number from 1 to 9 with a location in the grid given by a row
+        Takes an index from 0 to 8 with a location in the grid given by a row
         index and a column index
         Creates an updated version the sudoku board with that number
         Returns the new board
@@ -251,24 +249,24 @@ class Sudoku(ProblemState):
                     return (i,j)
         return None
 
+
     def successors(self):
         """
         Returns a list of valid successors to the current state.
         """
         indices = self.getFirstBlankEntry()
         result = []
-        if indices not None:
+        if indices is not None:
             row = indices[0]
             col = indices[1]
             for i in range(1, 10):
                 if self.isValid(row, col, i):
-                    succBoard = self.updatedSudoku(row, col, i)
-                    operator = "Updated entry at row "+row+" and col "+col\
-                    +" with number: "+i
-                    result.append(Sudoku(succBoard, operator))
+                    succBoard = self.newBoard(row, col, i)
+                    result.append(Sudoku(succBoard))
         return result
 
 
 
 if __name__ == "__main__":
-    pass
+    board = [[0 for j in range(9)] for i in range(9)]
+    print(Sudoku(board))
