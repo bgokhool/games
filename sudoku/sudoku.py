@@ -268,5 +268,6 @@ class Sudoku(ProblemState):
 
 
 if __name__ == "__main__":
-    board = [[0 for j in range(9)] for i in range(9)]
-    print(Sudoku(board))
+    # board = [[0 for j in range(9)] for i in range(9)]
+    # print(Sudoku(board))
+    pass
