@@ -42,6 +42,7 @@ class Node:
         self.state = state
         self.parent = parent
         self.depth = depth
+        
     def __str__(self):
         result = "\nState: " +  str(self.state)
         result += "\nDepth: " + str(self.depth)
