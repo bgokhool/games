@@ -33,6 +33,13 @@ to know that they might be solving the same puzzle.
 """
 
 # I still need to test this class!!!!!!
+# But I have a partial solution for now, so I will use it and try to create
+# a working prototype of the project before coming back to work on it
+import math
+import copy
+from random import randint, choice
+from sudoku import *
+# from search_problem import *
 
 class SudokuPuzzleGen():
     """ Sudoku class used to define a sudoku board for entertainement"""
@@ -63,7 +70,7 @@ class SudokuPuzzleGen():
         """
         self.genrate_soln_board()
 
-    def getBoard():
+    def getBoard(self):
         """ Returns a generated fully solved board """
         return self.solved_board
 
@@ -72,18 +79,18 @@ class SudokuPuzzleGen():
         Generates a random fully complete solution board based on
         above description stored in the puzzle instance
         """
-        self.place_values(self)
+        self.place_values()
 
     def get_mapping(self):
         """
         Returns a random created one-to-one map from alphabets to numbers
         """
-        values_to_add = unique_values[:]
+        values_to_add = self.unique_values[:]
         mapping = {}
         count = 0
         while len(values_to_add) != 0:
             rand_val = choice(values_to_add)
-            mapping[unique_symbols[count]] = rand_val
+            mapping[self.unique_symbols[count]] = rand_val
             values_to_add.remove(rand_val)
             count += 1
         return mapping
@@ -96,8 +103,8 @@ class SudokuPuzzleGen():
         mapping = self.get_mapping()
         for row in range(self.ROWS):
             for col in range(self.COLUMNS):
-                num = mapping[solved_board[row][col]]
-                solved_board[row][col] = num
+                num = mapping[self.solved_board[row][col]]
+                self.solved_board[row][col] = num
 
     # static method
     def rotate90(board):
@@ -190,3 +197,8 @@ class SudokuPuzzleGen():
         two cols can be swapped and swaps them if they can be
         """
         pass
+
+if __name__ == "__main__":
+    gen = SudokuPuzzleGen()
+    game_sol = Sudoku(gen.getBoard())
+    print(game_sol)
