@@ -32,6 +32,8 @@ to know that they might be solving the same puzzle.
 
 """
 
+# I still need to test this class!!!!!!
+
 class SudokuPuzzleGen():
     """ Sudoku class used to define a sudoku board for entertainement"""
 
@@ -55,14 +57,9 @@ class SudokuPuzzleGen():
     unique_values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     unique_symbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
 
-    def __init__(self, level):
+    def __init__(self):
         """
-        Takes an INT number from 0 to 2 corresponding to the difficulty level
-        and generates a Sudoku game based on that difficulty
-        Level of difficulty:
-            0 - Easy
-            1 - Medium
-            2 - Hard
+        Creates a completely solved board
         """
         self.genrate_soln_board()
 
@@ -193,15 +190,3 @@ class SudokuPuzzleGen():
         two cols can be swapped and swaps them if they can be
         """
         pass
-
-
-        # def clearBoard(self):
-        #     """
-        #     Takes a Sudoku board and clears it by removing all the entries that
-        #     were previously added by the player
-        #     """
-        #     board = []
-        #     for row in self.solved_board:
-        #         new_row = row[:]
-        #         board.append(new_row)
-        #     self.board = board
