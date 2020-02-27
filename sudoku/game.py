@@ -23,9 +23,10 @@ class Game(Sudoku):
             1 - Medium
             2 - Hard
         """
-        self.solution = generateSolution()
+        self.solution = self.generateSolution()
         self.initPuzzle = self.generatePuzzle(level)
-        self.board = copy.deepcopy(self.initPuzzle)
+        initBoard = copy.deepcopy(self.initPuzzle)
+        Sudoku.__init__(self, initBoard)
 
 
     def generateValuesToRemove(self, level):
@@ -44,6 +45,15 @@ class Game(Sudoku):
         return valuesToRemove
 
     def generatePuzzle(self, level):
+        """For now I will generate a prototype and use backtracking on it"""
+        x = 3
+        if x == 3:
+            puzzleBoard = copy.deepcopy(self.solution)
+            for i in range(9):
+                puzzleBoard[i][i] = 0
+            return puzzleBoard
+
+        # this part of the code is not in use right now
         toRemove = self.generateValuesToRemove(level)
         puzzleBoard = copy.deepcopy(self.solution)
         return self.generatePuzzleHelper(puzzleBoard, toRemove, 0)
@@ -82,3 +92,7 @@ class Game(Sudoku):
         were previously added by the player
         """
         self.board = copy.deepcopy(self.initPuzzle)
+
+if __name__ == "__main__":
+    game = Game(0)
+    print(game)
