@@ -72,9 +72,10 @@ class Sudoku(ProblemState):
     ENTRY = 0
     ROWS = COLUMNS = 9
 
-    def __init__(self, boardState):
+    def __init__(self, boardState, operator = None):
         """ Takes a Sudoku Board and creates a game """
         self.board = boardState
+        self.operator = operator
 
     def __str__(self):
         """
@@ -85,6 +86,8 @@ class Sudoku(ProblemState):
         by a newline character
         """
         str_board = ""
+        if self.operator is not None:
+            str_board += "Operator: " + self.operator + "\n"
 
         for i in range(self.ROWS):
             if i != 0 and (i%3) == 0:
@@ -155,7 +158,10 @@ class Sudoku(ProblemState):
         for i in range(self.ROWS):
             print("||", end=" ")
             for j in range(self.COLUMNS):
-                print(self.board[i][j], end=" ")
+                if self.board[i][j] != 0:
+                    print(self.board[i][j], end=" ")
+                else:
+                    print(" ", end=" ")
                 if j != (self.COLUMNS-1) and (j%3) == 2:
                     print("|", end=" ")
                 if j == (self.COLUMNS-1):
@@ -250,7 +256,7 @@ class Sudoku(ProblemState):
         return None
 
 
-    def successors(self):
+    def followingStates(self):
         """
         Returns a list of valid successors to the current state.
         """
@@ -265,6 +271,13 @@ class Sudoku(ProblemState):
                     result.append(Sudoku(succBoard))
         return result
 
+    def isDone(self):
+        """
+        Returns whether or not the board is complete or not
+        """
+        if self.getFirstBlankEntry() is not None:
+            return False
+        return True
 
 
 if __name__ == "__main__":
