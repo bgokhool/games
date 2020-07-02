@@ -70,6 +70,7 @@ class SudokuPuzzleGen():
         """
         self.genrate_soln_board()
 
+
     def getBoard(self):
         """ Returns a generated fully solved board """
         return self.solved_board
@@ -201,4 +202,4 @@ class SudokuPuzzleGen():
 if __name__ == "__main__":
     gen = SudokuPuzzleGen()
     game_sol = Sudoku(gen.getBoard())
-    print(game_sol)
+    game_sol.printBoard()

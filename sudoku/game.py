@@ -3,7 +3,7 @@ This class combines the Sudoku and SudokuPuzzleGen to randomly
 generate a Sudoku Board.
 """
 import copy
-from random import randint
+from random import randint, shuffle
 from sudoku import *
 from generator import *
 
@@ -28,7 +28,6 @@ class Game(Sudoku):
         initBoard = copy.deepcopy(self.initPuzzle)
         Sudoku.__init__(self, initBoard)
 
-
     def generateValuesToRemove(self, level):
         """
         Takes a level 0,1, or 2
@@ -46,17 +45,23 @@ class Game(Sudoku):
 
     def generatePuzzle(self, level):
         """For now I will generate a prototype and use backtracking on it"""
-        x = 3
-        if x == 3:
-            puzzleBoard = copy.deepcopy(self.solution)
-            for i in range(9):
-                puzzleBoard[i][i] = 0
-            return puzzleBoard
+        # puzzleBoard = copy.deepcopy(self.solution)
+        # set_of_vals_to_rem = []
+        # for _ in range(6):
+        #     values_to_remove = list(range(9))
+        #     shuffle(values_to_remove)
+        #     set_of_vals_to_rem.append(values_to_remove)
+        # for vals_to_rem in set_of_vals_to_rem:
+        #     for i in range(9):
+        #         if puzzleBoard[i][vals_to_rem[i]] != 0:
+        #             puzzleBoard[i][vals_to_rem[i]] = 0
+        # return puzzleBoard
 
-        # this part of the code is not in use right now
+        # this part of the code is in use right now
         toRemove = self.generateValuesToRemove(level)
         puzzleBoard = copy.deepcopy(self.solution)
         return self.generatePuzzleHelper(puzzleBoard, toRemove, 0)
+
 
     def generatePuzzleHelper(self, board, valuesToRemove, failedTries):
         """
@@ -71,10 +76,11 @@ class Game(Sudoku):
             randomRow = randint(0, 8)
             randomCol = randint(0, 8)
             newBoard = copy.deepcopy(board)
-            newBoard[randomRow][randomCol] == 0
-            initialState = Sudoku(newBoard)
-            root = Node(initialState, None, 0)
-            numSolns = Search(root)
+            newBoard[randomRow][randomCol] = 0
+            initialState = Sudoku(newBoard, f"Removed Num at Row {randomRow+1}, Col {randomCol+1}")
+            search = Search(initialState)
+            numSolns = search.getNumSolns()
+
             if numSolns != 1:
                 return self.generatePuzzleHelper(board, valuesToRemove, failedTries+1)
             else:
@@ -95,4 +101,6 @@ class Game(Sudoku):
 
 if __name__ == "__main__":
     game = Game(0)
-    print(game)
+    # print(game)
+    game.printBoard()
+    Sudoku(game.solution).printBoard()
