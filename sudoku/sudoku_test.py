@@ -128,21 +128,21 @@ class SudokuTest(u.TestCase):
         self.assertEqual(self.test_game.getFirstBlankEntry(), None,\
         "Testing first blank entry does not exist")
 
-    def test_successors(self):
+    def test_followingStates(self):
         board = [[0 for j in range(9)] for i in range(9)]
         expected = []
         for i in range(9):
             board[0][0] = i+1
             new_board =copy.deepcopy(board)
             expected.append(Sudoku(new_board))
-            
-        actual = self.test_game.successors()
+
+        actual = self.test_game.followingStates()
         values = map(lambda x,y: x.equals(y), expected, actual)
         values = list(values)
         result = True
         for value in values:
             result = result and value
-        self.assertTrue(result, "Testing successors method")
+        self.assertTrue(result, "Testing followingStates method")
 
 
 if __name__ == "__main__":

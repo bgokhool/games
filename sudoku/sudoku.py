@@ -48,7 +48,7 @@ I will specify this as a Search Problem and use the Backtracking Search
 Algorithm to generate a solution for any given board.
 
 @author: Bhuwan (Ashvin) Gokhool
-@version: Feb 2020
+@version: Feb 2020 v1.0, Jul 2020 v1.1
 """
 
 import math

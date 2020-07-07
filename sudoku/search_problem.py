@@ -155,7 +155,7 @@ class ProblemState:
         """
         abstract()
 
-    def successors(self):
+    def followingStates(self):
         """
         Returns a list of valid successors to the current state.
         """
