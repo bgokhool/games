@@ -39,14 +39,13 @@ import math
 import copy
 from random import randint, choice
 from sudoku import *
-# from search_problem import *
 
 class SudokuPuzzleGen():
     """ Sudoku class used to define a sudoku board for entertainement"""
 
     ROWS = COLUMNS = 9
 
-    solved_board = \
+    REF_BOARD = \
     [
         ['a', 'b', 'c',     'd', 'e', 'f',      'g', 'h', 'i'],
         ['f', 'i', 'h',     'g', 'b', 'c',      'd', 'e', 'a'],
@@ -60,6 +59,11 @@ class SudokuPuzzleGen():
         ['h', 'f', 'b',     'a', 'i', 'g',      'c', 'd', 'e'],
         ['e', 'c', 'i',     'h', 'd', 'b',      'f', 'a', 'g'],
     ]
+
+    # I tried putting COLUMNS and ROWS instead of hard-coding the value of 9
+    # here, but I ran into the following error:
+    # NameError: name 'COLUMNS' is not defined
+    solved_board = [[0 for j in range(9)] for i in range(9)]
 
     unique_values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     unique_symbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
@@ -104,7 +108,7 @@ class SudokuPuzzleGen():
         mapping = self.get_mapping()
         for row in range(self.ROWS):
             for col in range(self.COLUMNS):
-                num = mapping[self.solved_board[row][col]]
+                num = mapping[self.REF_BOARD[row][col]]
                 self.solved_board[row][col] = num
 
     # static method
