@@ -193,7 +193,9 @@ class SudokuPuzzleGen():
         Given a board representation and two row indices, verifies whether the
         two rows can be swapped and swaps them if they can be
         """
-        pass
+        new_board = copy.deepcopy(board)
+        new_board[row1], new_board[row2] = new_board[row2], new_board[row1]
+        return new_board
 
     # static method
     def swap_cols(board, row1, row2):
