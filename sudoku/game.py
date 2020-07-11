@@ -59,7 +59,7 @@ class Game(Sudoku):
         print(f"Vals to remove: {valuesToRemove}")
         if failedTries >= self.MAX_TRIES:
             return board
-        if valuesToRemove <= 0:
+        elif valuesToRemove <= 0:
             return board
         else:
             newBoard = copy.deepcopy(board)

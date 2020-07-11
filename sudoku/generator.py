@@ -32,9 +32,6 @@ to know that they might be solving the same puzzle.
 
 """
 
-# I still need to test this class!!!!!!
-# But I have a partial solution for now, so I will use it and try to create
-# a working prototype of the project before coming back to work on it
 import math
 import copy
 from random import randint, choice
