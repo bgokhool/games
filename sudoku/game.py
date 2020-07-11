@@ -12,7 +12,7 @@ class Game(Sudoku):
     EASY = 0
     MEDIUM = 1
     HARD = 2
-    MAX_TRIES = 10
+    MAX_TRIES = 5
 
     def __init__(self, level):
         """
@@ -39,25 +39,13 @@ class Game(Sudoku):
         elif level == self.MEDIUM:
             valuesToRemove = randint(49, 53)
         else:
-            valuesToRemove = randint(54, 55)
+            valuesToRemove = randint(54, 57)
 
         return valuesToRemove
 
     def generatePuzzle(self, level):
         """For now I will generate a prototype and use backtracking on it"""
-        # puzzleBoard = copy.deepcopy(self.solution)
-        # set_of_vals_to_rem = []
-        # for _ in range(6):
-        #     values_to_remove = list(range(9))
-        #     shuffle(values_to_remove)
-        #     set_of_vals_to_rem.append(values_to_remove)
-        # for vals_to_rem in set_of_vals_to_rem:
-        #     for i in range(9):
-        #         if puzzleBoard[i][vals_to_rem[i]] != 0:
-        #             puzzleBoard[i][vals_to_rem[i]] = 0
-        # return puzzleBoard
 
-        # this part of the code is in use right now
         toRemove = self.generateValuesToRemove(level)
         puzzleBoard = copy.deepcopy(self.solution)
         return self.generatePuzzleHelper(puzzleBoard, toRemove, 0)
@@ -68,19 +56,22 @@ class Game(Sudoku):
         Recursively removes value and verifies unique
         solution using backtracking
         """
-        if failedTries > self.MAX_TRIES:
+        print(f"Vals to remove: {valuesToRemove}")
+        if failedTries >= self.MAX_TRIES:
             return board
         if valuesToRemove <= 0:
             return board
         else:
+            newBoard = copy.deepcopy(board)
             randomRow = randint(0, 8)
             randomCol = randint(0, 8)
-            newBoard = copy.deepcopy(board)
+            while newBoard[randomRow][randomCol] == 0:
+                randomRow = randint(0, 8)
+                randomCol = randint(0, 8)
             newBoard[randomRow][randomCol] = 0
             initialState = Sudoku(newBoard, f"Removed Num at Row {randomRow+1}, Col {randomCol+1}")
             search = Search(initialState)
             numSolns = search.getNumSolns()
-
             if numSolns != 1:
                 return self.generatePuzzleHelper(board, valuesToRemove, failedTries+1)
             else:
@@ -100,7 +91,7 @@ class Game(Sudoku):
         self.board = copy.deepcopy(self.initPuzzle)
 
 if __name__ == "__main__":
-    game = Game(0)
+    game = Game(Game.HARD)
     # print(game)
     game.printBoard()
     Sudoku(game.solution).printBoard()
