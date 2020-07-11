@@ -158,6 +158,8 @@ class SudokuPuzzleGen():
         Given a board representation and two row indices, verifies whether the
         two rows can be swapped and swaps them if they can be
         """
+        assert row1//3 == row2//3, "Rows not in the same grid"
+
         new_board = copy.deepcopy(board)
         new_board[row1], new_board[row2] = new_board[row2], new_board[row1]
         return new_board
@@ -168,6 +170,8 @@ class SudokuPuzzleGen():
         Given a board representation and two col indices, verifies whether the
         two cols can be swapped and swaps them if they can be
         """
+        assert col1//3 == col2//3, "Cols not in the same grid"
+
         new_board = copy.deepcopy(board)
         for row in new_board:
             row[col1], row[col2] = row[col2], row[col1]
@@ -198,15 +202,17 @@ class SudokuPuzzleGen():
         randRotation = choice(self.RANDOM_ROT)
         self.solved_board = randRotation(self.solved_board)
 
-        for _ in range(5):
-            row1 = randint(0,8)
-            row2 = randint(0,8)
-            self.solved_board = SudokuPuzzleGen.swap_rows(self.solved_board, row1, row2)
+        for _ in range(2):
+            for i in range(2, 8, 3):
+                row1 = randint(i-2,i)
+                row2 = randint(i-2,i)
+                self.solved_board = SudokuPuzzleGen.swap_rows(self.solved_board, row1, row2)
 
-        for _ in range(5):
-            col1 = randint(0,8)
-            col2 = randint(0,8)
-            self.solved_board = SudokuPuzzleGen.swap_cols(self.solved_board, col1, col2)
+        for _ in range(2):
+            for i in range(2, 8, 3):
+                col1 = randint(i-2,i)
+                col2 = randint(i-2,i)
+                self.solved_board = SudokuPuzzleGen.swap_cols(self.solved_board, col1, col2)
 
         randReflection = choice(self.RANDOM_REF)
         self.solved_board = randReflection(self.solved_board)
