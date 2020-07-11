@@ -227,7 +227,7 @@ class SudokuPuzzleGenTest(u.TestCase):
 
         self.assertEqual(result_board, expected_board, "Correctly reflecting the board vertically")
 
-    def test_rswap_rows(self):
+    def test_swap_rows(self):
         test_board = \
         [
             ['a', 'a', 'a',     'a', 'a', 'a',      'a', 'a', 'a'],
@@ -270,7 +270,53 @@ class SudokuPuzzleGenTest(u.TestCase):
             ['i', 'i', 'i',     'i', 'i', 'i',      'i', 'i', 'i'],
         ]
 
-        self.assertEqual(result_board, expected_board, "Testing Swap Rows for rows 0->5, 6->3, 1->7, and 2->4")
+        self.assertEqual(result_board, expected_board, "Testing swap_rows for rows 0->5, 6->3, 1->7, and 2->4")
+
+
+    def test_swap_cols(self):
+        test_board = \
+        [
+            ['a', 'b', 'c',     'd', 'e', 'f',      'g', 'h', 'i'],
+            ['a', 'b', 'c',     'd', 'e', 'f',      'g', 'h', 'i'],
+            ['a', 'b', 'c',     'd', 'e', 'f',      'g', 'h', 'i'],
+
+            ['a', 'b', 'c',     'd', 'e', 'f',      'g', 'h', 'i'],
+            ['a', 'b', 'c',     'd', 'e', 'f',      'g', 'h', 'i'],
+            ['a', 'b', 'c',     'd', 'e', 'f',      'g', 'h', 'i'],
+
+            ['a', 'b', 'c',     'd', 'e', 'f',      'g', 'h', 'i'],
+            ['a', 'b', 'c',     'd', 'e', 'f',      'g', 'h', 'i'],
+            ['a', 'b', 'c',     'd', 'e', 'f',      'g', 'h', 'i'],
+        ]
+
+        # Swap rows with a's and f's
+        result_board = SudokuPuzzleGen.swap_cols(test_board, 0, 5)
+
+        # Swap rows with g's and d's
+        result_board = SudokuPuzzleGen.swap_cols(result_board, 6, 3)
+
+        # Swap rows with b's and h's
+        result_board = SudokuPuzzleGen.swap_cols(result_board, 1, 7)
+
+        # Swap rows with c's and e's
+        result_board = SudokuPuzzleGen.swap_cols(result_board, 2, 4)
+
+        expected_board = \
+        [
+            ['f', 'h', 'e',     'g', 'c', 'a',      'd', 'b', 'i'],
+            ['f', 'h', 'e',     'g', 'c', 'a',      'd', 'b', 'i'],
+            ['f', 'h', 'e',     'g', 'c', 'a',      'd', 'b', 'i'],
+
+            ['f', 'h', 'e',     'g', 'c', 'a',      'd', 'b', 'i'],
+            ['f', 'h', 'e',     'g', 'c', 'a',      'd', 'b', 'i'],
+            ['f', 'h', 'e',     'g', 'c', 'a',      'd', 'b', 'i'],
+            
+            ['f', 'h', 'e',     'g', 'c', 'a',      'd', 'b', 'i'],
+            ['f', 'h', 'e',     'g', 'c', 'a',      'd', 'b', 'i'],
+            ['f', 'h', 'e',     'g', 'c', 'a',      'd', 'b', 'i'],
+        ]
+
+        self.assertEqual(result_board, expected_board, "Testing swap_cols for cols 0->5, 6->3, 1->7, and 2->4")
 
 
 

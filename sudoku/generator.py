@@ -68,48 +68,13 @@ class SudokuPuzzleGen():
     unique_values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     unique_symbols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
 
-    def __init__(self):
+    # static method
+    def rotate0(board):
         """
-        Creates a completely solved board
+        This method does not change the board configuration at all
+        It is just here for consistency
         """
-        self.genrate_soln_board()
-
-
-    def getBoard(self):
-        """ Returns a generated fully solved board """
-        return self.solved_board
-
-    def genrate_soln_board(self):
-        """
-        Generates a random fully complete solution board based on
-        above description stored in the puzzle instance
-        """
-        self.place_values()
-
-    def get_mapping(self):
-        """
-        Returns a random created one-to-one map from alphabets to numbers
-        """
-        values_to_add = self.unique_values[:]
-        mapping = {}
-        count = 0
-        while len(values_to_add) != 0:
-            rand_val = choice(values_to_add)
-            mapping[self.unique_symbols[count]] = rand_val
-            values_to_add.remove(rand_val)
-            count += 1
-        return mapping
-
-    def place_values(self):
-        """
-        Places numerical values on the Sudoku board to form a fully
-        completed solution
-        """
-        mapping = self.get_mapping()
-        for row in range(self.ROWS):
-            for col in range(self.COLUMNS):
-                num = mapping[self.REF_BOARD[row][col]]
-                self.solved_board[row][col] = num
+        return board
 
     # static method
     def rotate90(board):
@@ -198,12 +163,80 @@ class SudokuPuzzleGen():
         return new_board
 
     # static method
-    def swap_cols(board, row1, row2):
+    def swap_cols(board, col1, col2):
         """
         Given a board representation and two col indices, verifies whether the
         two cols can be swapped and swaps them if they can be
         """
-        pass
+        new_board = copy.deepcopy(board)
+        for row in new_board:
+            row[col1], row[col2] = row[col2], row[col1]
+        return new_board
+
+    RANDOM_ROT = [rotate90, rotate180, rotate270, rotate0]
+    RANDOM_REF = [reflect_horz, reflect_vert, rotate0]
+
+
+
+    def __init__(self):
+        """
+        Creates a completely solved board
+        """
+        self.genrate_soln_board()
+
+
+    def getBoard(self):
+        """ Returns a generated fully solved board """
+        return self.solved_board
+
+    def genrate_soln_board(self):
+        """
+        Generates a random fully complete solution board based on
+        above description stored in the puzzle instance
+        """
+        self.place_values()
+        randRotation = choice(self.RANDOM_ROT)
+        self.solved_board = randRotation(self.solved_board)
+
+        for _ in range(5):
+            row1 = randint(0,8)
+            row2 = randint(0,8)
+            self.solved_board = SudokuPuzzleGen.swap_rows(self.solved_board, row1, row2)
+
+        for _ in range(5):
+            col1 = randint(0,8)
+            col2 = randint(0,8)
+            self.solved_board = SudokuPuzzleGen.swap_cols(self.solved_board, col1, col2)
+
+        randReflection = choice(self.RANDOM_REF)
+        self.solved_board = randReflection(self.solved_board)
+
+
+    def get_mapping(self):
+        """
+        Returns a random created one-to-one map from alphabets to numbers
+        """
+        values_to_add = self.unique_values[:]
+        mapping = {}
+        count = 0
+        while len(values_to_add) != 0:
+            rand_val = choice(values_to_add)
+            mapping[self.unique_symbols[count]] = rand_val
+            values_to_add.remove(rand_val)
+            count += 1
+        return mapping
+
+    def place_values(self):
+        """
+        Places numerical values on the Sudoku board to form a fully
+        completed solution
+        """
+        mapping = self.get_mapping()
+        for row in range(self.ROWS):
+            for col in range(self.COLUMNS):
+                num = mapping[self.REF_BOARD[row][col]]
+                self.solved_board[row][col] = num
+
 
 if __name__ == "__main__":
     gen = SudokuPuzzleGen()
